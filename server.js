@@ -44,7 +44,9 @@ app.post('/agendar', (req, res) => {
       console.error('Erro ao agendar horário:', err);
       return res.status(500).json({ message: 'Erro ao agendar horário. Por favor, tente novamente mais tarde.' });
     }
-    res.status(200).json({ message: 'Horário agendado com sucesso.' });
+
+    const mensagem = 'Horário agendado com sucesso.';
+    res.status(200).json({ message: mensagem });
   });
 
 
