@@ -1,10 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const sqlite3 = require('sqlite3').verbose();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
+// Conexão com o banco de dados SQLite
+const dbPath = 'https://reservasapp-api.onrender.com'; // Substitua pelo caminho correto do seu banco de dados SQLite
+const db = new sqlite3.Database(dbPath);
+
+// Middleware para processar o corpo das requisições
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -21,7 +27,18 @@ app.post('/agendar', (req, res) => {
   const id = generateId(); // Gerando um ID único para o agendamento
   const agendamento = { id, nome, horario };
   agendamentos.push(agendamento);
-  res.json({ message: 'Agendamento realizado com sucesso!', agendamento });
+
+  // Aqui você pode salvar os dados no banco de dados SQLite
+  db.run('INSERT INTO reservas (nome, horario) VALUES (?, ?)', [nome, horario], (err) => {
+    if (err) {
+      console.error('Erro ao agendar horário:', err);
+      return res.status(500).json({ message: 'Erro ao agendar horário. Por favor, tente novamente mais tarde.' });
+    }
+    res.status(200).json({ message: 'Horário agendado com sucesso.' });
+  });
+
+
+//res.json({ message: 'Agendamento realizado com sucesso!', agendamento });
 });
 
 // Rota para consultar todos os agendamentos
