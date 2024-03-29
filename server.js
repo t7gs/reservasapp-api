@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Conexão com o banco de dados SQLite
-const dbPath = 'https://reservasapp-api.onrender.com'; // Substitua pelo caminho correto do seu banco de dados SQLite
+const dbPath = 'https://reservasapp-api.onrender.com/Database.db'; // Substitua pelo caminho correto do seu banco de dados SQLite
 const db = new sqlite3.Database(dbPath);
 
 // Middleware para processar o corpo das requisições
