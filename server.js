@@ -6,7 +6,7 @@ const path = require('path');
 
 
 const app = express();
-const PORT = 3005;
+const PORT = process.env.PORT || 3000;
 
 
 // Conexão com o banco de dados SQLite
