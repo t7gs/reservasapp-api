@@ -6,8 +6,11 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
+
+
 // Conexão com o banco de dados SQLite
-const path = require('path');
+var path = require('path');
 const dbPath = 'https://reservasapp-api.onrender.com/Database.db'; // Substitua pelo caminho correto do seu banco de dados SQLite
 const db = new sqlite3.Database(path.resolve(__dirname,dbPath));
 
