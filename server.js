@@ -1,24 +1,23 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+const { Pool } = require('pg');
+
 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 
-// Conexão com o banco de dados SQLite
-const dbPath = 'https://reservasapp-api.onrender.com/Database.db' // Substitua pelo caminho correto do seu banco de dados SQLite
-
-//Abrindo banco de dados
-const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE,(err)=> {
-  if(err){
-    return console.error(err.message);
-  }
-  console.log("Conectado ao Banco de dados Reserva")
+// Configurações de conexão com o banco de dados PostgreSQL
+const pool = new Pool({
+  user: 'seu_usuario',
+  host: 'localhost',
+  database: 'seu_banco_de_dados',
+  password: 'sua_senha',
+  port: 5432, // Porta padrão do PostgreSQL
 });
+
 
 // Middleware para processar o corpo das requisições
 app.use(bodyParser.json());
@@ -38,19 +37,15 @@ app.post('/agendar', (req, res) => {
   const agendamento = { id, nome, horario };
   agendamentos.push(agendamento);
 
-  // Aqui você pode salvar os dados no banco de dados SQLite
-  db.run('INSERT INTO reservas (nome, horario) VALUES (?, ?)', [nome, horario], (err) => {
+  // Aqui você pode salvar os dados no PostgreSQL
+  pool.query('INSERT INTO reservas (nome, horario) VALUES ($1, $2)', [nome, horario], (err, result) => {
     if (err) {
       console.error('Erro ao agendar horário:', err);
       return res.status(500).json({ message: 'Erro ao agendar horário. Por favor, tente novamente mais tarde.' });
     }
-
-    const mensagem = 'Horário agendado com sucesso.';
-    res.status(200).json({ message: mensagem });
+    result.status(200).json({ message: 'Horário agendado com sucesso.' });
   });
 
-
-//res.json({ message: 'Agendamento realizado com sucesso!', agendamento });
 });
 
 // Rota para consultar todos os agendamentos
