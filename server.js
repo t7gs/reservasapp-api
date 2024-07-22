@@ -11,10 +11,10 @@ const PORT = process.env.PORT || 3000;
 
 // Configurações de conexão com o banco de dados PostgreSQL
 const pool = new Pool({
-  user: 'seu_usuario',
-  host: 'localhost',
-  database: 'seu_banco_de_dados',
-  password: 'sua_senha',
+  user: 'postgres.nsciyimnadkqakoiesql',
+  host: 'aws-0-sa-east-1.pooler.supabase.com',
+  database: 'postgres',
+  password: 'hwYiCAMhxbLEx4Nf',
   port: 5432, // Porta padrão do PostgreSQL
 });
 
